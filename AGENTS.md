@@ -2,7 +2,7 @@
 
 ## Current setup
 
-- The persistence code is a dependency-free browser ECMAScript module (`.mjs`). There is no package manifest, lockfile, frontend app, or frontend toolchain in the repository yet, so there is no dependency-install, lint, build, or app-run command to use. The frontend owner has agreed to a dependency-free browser ESM stack; document its commands here once the app files exist.
+- The persistence code is a dependency-free browser ECMAScript module (`.mjs`). The frontend HTML/CSS scaffold exists, but has no interactive application module yet. There is no package manifest, lockfile, or frontend toolchain, so there is no dependency-install, lint, build, or app-run command to use. The frontend owner has agreed to a dependency-free browser ESM stack; document its commands here once the app files exist.
 - Node.js is required to run the persistence tests. The command verified for the current repository is:
 
   ```sh
@@ -14,6 +14,8 @@
 ## Directory map
 
 - `README.md` — repository overview.
+- `index.html` and `src/client/notes.css` — frontend scaffold; application logic and browser verification pending.
+- `docs/decisions/002-frontend.md` — frontend architecture and open design integration question.
 - `docs/notes-contract.md` — jointly agreed persistence interface.
 - `docs/decisions/001-browser-persistence.md` — browser persistence implementation decision and known limitations.
 - `src/persistence/notes-store.mjs` — browser note persistence module.
