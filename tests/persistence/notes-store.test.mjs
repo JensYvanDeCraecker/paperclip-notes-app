@@ -66,3 +66,24 @@ test('detects a change between read and write', () => {
   storage.getItem=k => ++calls===2 ? '{"version":1,"notes":[]}' : read(k);
   assert.throws(()=>createNotesStore({storage}).create({title:'x',body:''}),code('conflict'));
 });
+test('agreed returns, blank fields, snapshots, custom key and deterministic tie ordering', () => {
+  const storage = memory(), store = createNotesStore({storage, key:'custom'});
+  const blank = store.create({title:'', body:'  '});
+  assert.equal(blank.title, '');
+  assert.equal(blank.body, '  ');
+  assert.equal(blank.createdAt, blank.updatedAt);
+  blank.title = 'local draft';
+  assert.equal(store.get(blank.id).title, '');
+  assert.equal(storage.getItem('personal-notes:v1'), null);
+  assert.equal(store.remove(blank.id), true);
+  assert.equal(store.get(blank.id), null);
+  assert.throws(() => store.remove(blank.id), code('not_found'));
+  assert.throws(() => store.list(null), code('invalid'));
+  const time = '2026-10-13T00:00:00.000Z';
+  storage.setItem('custom', JSON.stringify({version:1, notes:[
+    {id:'b', title:'Alpha', body:'Beta', createdAt:time, updatedAt:time},
+    {id:'a', title:'Alpha', body:'Beta', createdAt:time, updatedAt:time},
+    {id:'c', title:'Alpha', body:'Beta', createdAt:time, updatedAt:'2026-10-14T00:00:00.000Z'},
+  ]}));
+  assert.deepEqual(store.list('  ALP  bet  ').map(n => n.id), ['c','a','b']);
+});

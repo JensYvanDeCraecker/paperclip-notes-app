@@ -1,6 +1,6 @@
 # Browser persistence implementation
 
-Status: implementation decision; public contract awaiting joint agreement.
+Status: accepted implementation decision; jointly agreed public contract in `docs/notes-contract.md`.
 
 The release needs personal notes in one browser and no server. Use a dependency-free browser ES module and a versioned localStorage document under `personal-notes:v1`. Each mutation reads the latest document, validates it, applies one operation and commits with one setItem. A successful return means that the browser storage API accepted the write. Read/write failures are explicit typed errors. Invalid or unsupported documents are never replaced automatically.
 
